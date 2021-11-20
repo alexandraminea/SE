@@ -62,7 +62,7 @@
                       <b-badge href="#" pill variant="dark"  @click="edittedCardId = card.id; sendInfo(idy, card.text[idy], card); $bvModal.show('bv-modal-example')">info</b-badge>
                       <!-- <b-button id="show-btn" @click="edittedCardId = card.id; sendInfo(idy, card.text[idy], card); $bvModal.show('bv-modal-example')">Show card</b-button> -->
 
-                      <b-modal id="bv-modal-example" @show="resetModal" hide-footer>
+                      <b-modal id="bv-modal-example" @show="resetModal" hide-footer v-if="edittedCardId == card.id">
                         <template #modal-header="{ close }">
       <!-- Emulate built in modal header close button action -->
                           <!-- <b-button size="sm" variant="outline-danger" v-on:click="editMode = false; $bvModal.hide('bv-modal-example')"> -->
