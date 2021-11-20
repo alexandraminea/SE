@@ -55,21 +55,21 @@
                   <td>
                     {{card.text[idy]}}
                   </td>
-                  <!-- <td class="text-right" v-if="editMode == false || edittedCardId != card.id">
-                    <div>
-                    <b-dropdown id="dropdown-1" text="Action" class="m-md-2">
-                      <b-dropdown-item @click="setEditMode(card.id)">Edit</b-dropdown-item>
-                      <b-dropdown-item @click="deleteCard(card.id)">Delete</b-dropdown-item>
-                      <b-dropdown-divider></b-dropdown-divider>
-                    </b-dropdown>
-                    </div>
-                  </td> -->
+
                   <td>
                     <!-- MODAL -->
                     <div>
-                      <b-button id="show-btn" @click="sendInfo(idy, card.text[idy], card); $bvModal.show('bv-modal-example')">Show card</b-button>
+                      <b-badge href="#" pill variant="dark"  @click="edittedCardId = card.id; sendInfo(idy, card.text[idy], card); $bvModal.show('bv-modal-example')">info</b-badge>
+                      <!-- <b-button id="show-btn" @click="edittedCardId = card.id; sendInfo(idy, card.text[idy], card); $bvModal.show('bv-modal-example')">Show card</b-button> -->
 
                       <b-modal id="bv-modal-example" @show="resetModal" hide-footer>
+                        <template #modal-header="{ close }">
+      <!-- Emulate built in modal header close button action -->
+                          <!-- <b-button size="sm" variant="outline-danger" v-on:click="editMode = false; $bvModal.hide('bv-modal-example')"> -->
+                            <!-- Close Modal -->
+                          <!-- </b-button> -->
+                          <!-- <h5>{{cardName}}</h5> -->
+                        </template>
                         <template #modal-title>
                           {{cardName}}
                         </template>
@@ -81,26 +81,26 @@
                     </div>
                     </div>
                     <tr>
-                    <td v-if="editMode == true">
-                    <b-form-input v-model="text[idySent]" id="input-small" placeholder="Change card name"></b-form-input>
-                    <b-form-input v-model="description" id="input-small" placeholder="Change card description"></b-form-input>
-                    </td>
-                    <td class="text-right" v-if="editMode == true">
-                      <button title="Add Card" class="btn btn-success" v-on:click=" $bvModal.hide('bv-modal-example'); saveAndExit(idySent, list.id, currentCard.id)">Save</button>
-                    </td>
-                    <td class="text-right">
-                      <div>
-                      <b-dropdown id="dropdown-1" text="Action" class="m-md-2">
-                        <b-dropdown-item @click="setEditMode(currentCard.id)">Edit</b-dropdown-item>
-                        <b-dropdown-item @click="deleteCard(currentCard.id); $bvModal.hide('bv-modal-example')">Delete</b-dropdown-item>
-                        <b-dropdown-divider></b-dropdown-divider>
-                      </b-dropdown>
-                      </div>
-                    </td>
+                      <td v-if="editMode == true">
+                      <b-form-input v-model="cname[idySent]" id="input-small" placeholder="Change card name"></b-form-input>
+                      <b-form-input v-model="description" id="input-small" placeholder="Change card description"></b-form-input>
+                      </td>
+                      <td class="text-right" v-if="editMode == true">
+                        <button title="Add Card" class="btn btn-success" v-on:click=" $bvModal.hide('bv-modal-example'); saveAndExit(idySent, list.id, currentCard.id)">Save</button>
+                      </td>
+                      <td class="text-right">
+                        <div>
+                        <b-dropdown id="dropdown-1" text="Action" class="m-md-2">
+                          <b-dropdown-item @click="setEditMode(currentCard.id)">Edit</b-dropdown-item>
+                          <b-dropdown-item @click="deleteCard(currentCard.id); $bvModal.hide('bv-modal-example')">Delete</b-dropdown-item>
+                          <b-dropdown-divider></b-dropdown-divider>
+                        </b-dropdown>
+                        </div>
+                      </td>
                     </tr>
                     </table>
                     </div>
-                    <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example'); editMode = false">Close Me</b-button>
+                    <b-button class="mt-3" block variant="outline-danger" @click="$bvModal.hide('bv-modal-example'); editMode = false">Close Me</b-button>
                     </b-modal>
                     </div>
                   </td>
@@ -167,7 +167,8 @@ export default {
       edittedCardId: '',
       cardName: '',
       currentCard: {},
-      idySent: ''
+      idySent: '',
+      cname: {}
     }
   },
   firestore () {
@@ -262,10 +263,10 @@ export default {
     saveAndExit (idy, listId, cardId) {
       // this.addCardToList(idy, listId)
       // this.deleteCard(cardId)
-      db.collection("cards").doc(cardId).update({text: this.text})
+      db.collection("cards").doc(cardId).update({text: this.cname})
       db.collection("cards").doc(cardId).update({description: this.description})
       for (let i = 0; i <= idy; i++) {
-        this.text[i] = ''
+        this.cname[i] = ''
       }
       this.editMode = false
       this.ed[cardId] = false
