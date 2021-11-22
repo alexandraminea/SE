@@ -263,8 +263,16 @@ export default {
     saveAndExit (idy, listId, cardId) {
       // this.addCardToList(idy, listId)
       // this.deleteCard(cardId)
-      db.collection("cards").doc(cardId).update({text: this.cname})
-      db.collection("cards").doc(cardId).update({description: this.description})
+      let ok = false
+      console.log(this.cname)
+      for (const cn in this.cname)
+        if (cn != "")
+          {
+            ok = true
+          }
+      //console.log(ok)
+      if(ok === true) db.collection("cards").doc(cardId).update({text: this.cname})
+      if(this.description != "") db.collection("cards").doc(cardId).update({description: this.description})
       for (let i = 0; i <= idy; i++) {
         this.cname[i] = ''
       }
@@ -272,7 +280,7 @@ export default {
       this.ed[cardId] = false
       this.edittedCardId = ''
       this.currentCard = {}
-      console.log(this.description)
+      //console.log(this.description)
     },
     // initEdit() {
     //   for(const card of this.cards) {
